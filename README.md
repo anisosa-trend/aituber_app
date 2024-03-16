@@ -20,6 +20,14 @@ exe ファイルを作成する
 
 `python -m eel run.py ./web/build --onefile`
 
+## 利用サービス
+
+### OpenWeather
+
+天気情報を取得するために使用している。
+
+https://openweathermap.org/
+
 #　参考文献
 
 以下の参考文献は、UI 部分を run.py と同じ階層に作成しているため、ファイル構成が違うことに注意する。

@@ -12,7 +12,7 @@ eel.set_host("ws://localhost:8080");
 const App: FC = () => {
   return (
     <ChakraProvider>
-      <Box paddingX={2} paddingY={1}>
+      <Box position={"fixed"} top={0} left={0} width={"100%"} paddingX={2} paddingY={1}>
         <Header/>
       </Box>
 
