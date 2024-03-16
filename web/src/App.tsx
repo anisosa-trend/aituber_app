@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+export const eel = (window as any).eel;
+eel.set_host("ws://localhost:8080");
+
+function test(){
+  eel.test();
+}
+
+const App: FC = () => {
   return (
     <div className="App">
       <header className="App-header">
@@ -10,14 +17,12 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <a
+        <p
           className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+          onClick={test}
         >
           Learn React
-        </a>
+        </p>
       </header>
     </div>
   );
