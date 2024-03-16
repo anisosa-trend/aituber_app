@@ -48,7 +48,7 @@ type WeatherInformationType = {
 }
 
 export const Header: FC = () => {
-  const [datetime, setDatetime] = useState<string | null>()
+  const [datetime, setDatetime] = useState<string | null>(null)
   const [weatherInformation, setWeatherInformation] = useState<WeatherInformationType | null>(null);
   
   useEffect(() => {
@@ -99,9 +99,27 @@ export const Header: FC = () => {
   }
 
   return (
-    <Stack direction={"row"} gap={4}>
+    <Stack
+      direction={{
+        base: "column",
+        md: "row"
+      }}
+      gap={{
+        base: 0,
+        md: 4
+      }}
+    >
       <Text>{datetime}</Text>
-      <Stack direction={"row"} gap={1}>
+      <Stack
+        direction={{
+          base: "column",
+          md: "row"
+        }}
+        gap={{
+          base: 0,
+          md: 1
+        }}
+      >
         <Stack direction={"row"} gap={0}>
           <Text>{weatherInformation.weather[0].description}</Text>
           <Image src={fetchOpenweathermapImageURL(weatherInformation.weather[0].icon)} alt="" width={6}/>
