@@ -1,30 +1,21 @@
 import React, { FC } from 'react';
-import logo from './logo.svg';
+import { ChakraProvider } from '@chakra-ui/react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { TopPage } from './features/Top';
 import './App.css';
 
 export const eel = (window as any).eel;
 eel.set_host("ws://localhost:8080");
 
-function test(){
-  eel.test();
-}
-
 const App: FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p
-          className="App-link"
-          onClick={test}
-        >
-          Learn React
-        </p>
-      </header>
-    </div>
+    <ChakraProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<TopPage/>} />
+        </Routes>
+      </Router>
+    </ChakraProvider>
   );
 }
 
