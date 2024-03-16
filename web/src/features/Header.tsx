@@ -130,10 +130,12 @@ export const Header: FC = () => {
   )
 }
 
+// 時間の表示を0詰めにする
 const formatDatetime = (datetime: number) => {
   return datetime.toString().padStart(2, "0")
 }
 
+// Open Weather API のアイコンidから画像を取得する
 const fetchOpenweathermapImageURL = (iconNum: WeatherInformationType["weather"][0]["icon"]) => {
   return `https://openweathermap.org/img/wn/${iconNum}@2x.png`
 }
