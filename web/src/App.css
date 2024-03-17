@@ -3,6 +3,13 @@
 *{
   font-family: 'Noto Sans JP', sans-serif;
 }
+p {
+  user-select: none;
+}
+  
+img {
+  -webkit-user-drag: none;
+}
 
 .App {
   text-align: center;

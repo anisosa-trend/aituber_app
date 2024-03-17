@@ -22,7 +22,7 @@ export const VolumeState: FC = () => {
   }, [audio])
 
   return(
-    <Box>
+    <Box cursor={"pointer"}>
       {isPaused ? (
         <VolumeOffIcon width={5} height={"auto"} onClick={handleOnclick}/>
       ) : (
