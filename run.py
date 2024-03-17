@@ -30,6 +30,9 @@ def main(develop):
         host="localhost",
         port=8080,
         size=(1280, 800),
+        cmdline_args=[
+            f"--window-size={800},{1280}",
+        ],
     )
     try:
         eel.start(page, mode="chrome", **eel_kwargs)
