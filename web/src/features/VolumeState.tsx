@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react"
 import { Box } from "@chakra-ui/react"
 import { VolumeOnIcon } from "../ui/VolumeOnIcon"
 import { VolumeOffIcon } from "../ui/VolumeOffIcon"
-import sfx from '../sounds/sound_001.mp3';
+import sfx from '../settings/sound.mp3';
 
 export const VolumeState: FC = () => {
   const audio = useMemo(() => new Audio(sfx), [])
