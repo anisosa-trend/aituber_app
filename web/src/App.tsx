@@ -5,6 +5,7 @@ import { Box, ChakraProvider } from '@chakra-ui/react'
 import { Header } from './features/Header';
 import { TopPage } from './features/Top';
 import { ApplicationState } from './features/ApplicationState';
+import { VolumeState } from './features/VolumeState';
 
 export const eel = (window as any).eel;
 eel.set_host("ws://localhost:8080");
@@ -16,8 +17,9 @@ const App: FC = () => {
         <Header/>
       </Box>
 
-      <Box position={"fixed"} top={0} right={0} paddingX={2} paddingY={1}>
+      <Box position={"fixed"} top={0} right={0} paddingX={2} paddingY={0}>
         <ApplicationState/>
+        <VolumeState/>
       </Box>
 
       <Router>
