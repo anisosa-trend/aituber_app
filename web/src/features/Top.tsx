@@ -17,6 +17,10 @@ export const TopPage: FC = () => {
     setWindowList(windowTitleList)
   }, [])
 
+  const translationScreenText = useCallback(() => {
+    eel.translationScreenText(selectedWindow)
+  }, [selectedWindow])
+
   return (
     <Box width={"100%"} height={"100vh"} paddingX={2} paddingY={1} overflow={"hidden"}>
       {/* 機能ボタンを表示する */}
@@ -48,7 +52,7 @@ export const TopPage: FC = () => {
             })}
           </Select>
 
-          <Button colorScheme="telegram" fontSize={"sm"}>翻訳</Button>
+          <Button colorScheme="telegram" fontSize={"sm"} onClick={translationScreenText}>翻訳</Button>
         </Box>
       )}
 
