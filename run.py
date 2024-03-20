@@ -4,6 +4,7 @@ import random
 import sys
 
 import eel
+from ahk import AHK
 
 
 # main()を実行する前に宣言する。
@@ -11,6 +12,42 @@ import eel
 @eel.expose
 def test():
     print("hello eel")
+
+
+# 起動しているウィンドウの一覧を取得する
+@eel.expose
+def getWindowTitle():
+    ahk = AHK()
+    window_id_list = list(ahk.windows())
+    window_list = [win.title for win in window_id_list]
+    filter_window_list = list(filter(filterWindowList, window_list))
+    return filter_window_list
+
+
+# ウィンドウリストから空文字と不要なものを除外する
+def filterWindowList(window_title):
+    if window_title == "NVIDIA GeForce Overlay":
+        return False
+
+    if window_title == "Program Manager":
+        return False
+
+    if len(window_title) == 0:
+        return False
+
+    return True
+
+
+@eel.expose
+def createScreenshot(windowTitle):
+    # 指定したウィンドウタイトルからウィンドウの場所を取得する
+
+    # 指定したウィンドウのスクリーンショットを撮る
+
+    # 作成したスクリーンショットをOpwnAI APIにPOSTする
+
+    # AIからの回答をreturnする
+    return
 
 
 # 開発者モードとbuild実行モードを切り替えられるようにする。

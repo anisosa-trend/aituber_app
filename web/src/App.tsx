@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Box, ChakraProvider, Stack } from '@chakra-ui/react'
@@ -11,10 +11,19 @@ export const eel = (window as any).eel;
 eel.set_host("ws://localhost:8080");
 
 const App: FC = () => {
+  useEffect(() => {
+
+    window.onresize = function () {
+      if (window.innerWidth <= 375) {
+        window.resizeTo(375, 800);
+      }
+    };
+  }, [])
+
   return (
     <ChakraProvider>
       <Box position={"fixed"} top={0} left={0} paddingX={2} paddingY={1}>
-        <Header/>
+        <Header />
       </Box>
 
       <Stack
@@ -23,8 +32,8 @@ const App: FC = () => {
           md: "row"
         }}
         gap={{
-         base: 0,
-         md: 2
+          base: 0,
+          md: 2
         }}
         position={"fixed"}
         top={0}
@@ -32,13 +41,13 @@ const App: FC = () => {
         paddingX={2}
         paddingY={0}
       >
-        <VolumeState/>
-        <ApplicationState/>
+        <VolumeState />
+        <ApplicationState />
       </Stack>
 
       <Router>
         <Routes>
-          <Route path="/" element={<TopPage/>} />
+          <Route path="/" element={<TopPage />} />
         </Routes>
       </Router>
     </ChakraProvider>
