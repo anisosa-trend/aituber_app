@@ -10,6 +10,7 @@ from ctypes.wintypes import HWND, DWORD, RECT
 
 import mss
 from PIL import Image
+import datetime
 
 
 # main()を実行する前に宣言する。
@@ -46,12 +47,13 @@ def filterWindowList(window_title):
 @eel.expose
 def translationScreenText(targetWindowTitle):
     print("Running translationScreenText...", targetWindowTitle)
+
     # 指定したウィンドウタイトルからウィンドウの場所を取得する
     windowPosition = GetWindowRectFromName(targetWindowTitle)
 
-    # 指定したウィンドウのスクリーンショットを撮る
-    img = createScreenshot(windowPosition)
-    print(img)
+    # 指定したウィンドウのスクリーンショットを取って、保存先のPathを取得する
+    savePath = createScreenshot(windowPosition)
+    print(savePath)
 
     # 作成したスクリーンショットをOpwnAI APIにPOSTする
 
@@ -61,6 +63,12 @@ def translationScreenText(targetWindowTitle):
 
 def GetWindowRectFromName(targetWindowTitle):
     TargetWindowHandle = ctypes.windll.user32.FindWindowW(0, targetWindowTitle)
+
+    # 対象の画面をアクティブにし最前列に表示する
+    # ＠TODO 現状動作していない。
+    ctypes.windll.user32.ShowWindow(targetWindowTitle, 1)
+    ctypes.windll.user32.SetForegroundWindow(targetWindowTitle)
+
     Rectangle = ctypes.wintypes.RECT()
     ctypes.windll.user32.GetWindowRect(TargetWindowHandle, ctypes.pointer(Rectangle))
     return (Rectangle.left, Rectangle.top, Rectangle.right, Rectangle.bottom)
@@ -68,10 +76,24 @@ def GetWindowRectFromName(targetWindowTitle):
 
 def createScreenshot(windowPosition):
     with mss.mss() as sct:
+        currentDatetime = datetime.datetime.now()
+        savePath = (
+            "C:\\Users\\owner\\Pictures\\Screenshots"
+            + "\\"
+            + str(currentDatetime.year)
+            + str(currentDatetime.month)
+            + str(currentDatetime.day)
+            + str(currentDatetime.hour)
+            + str(currentDatetime.minute)
+            + str(currentDatetime.second)
+            + str(currentDatetime.microsecond)
+            + ".png"
+        )
+
         screenshot = sct.grab(windowPosition)
         image = Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
-        image.save("sample.png")
-        # return image
+        image.save(savePath)
+        return savePath
 
 
 # 開発者モードとbuild実行モードを切り替えられるようにする。
