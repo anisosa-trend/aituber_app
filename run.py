@@ -30,16 +30,16 @@ def test():
 
 # 起動しているウィンドウの一覧を取得する
 @eel.expose
-def getWindowTitle():
+def get_window_title():
     ahk = AHK()
     window_id_list = list(ahk.windows())
     window_list = [win.title for win in window_id_list]
-    filter_window_list = list(filter(filterWindowList, window_list))
-    return filter_window_list
+    filtered_window_list = list(filter(filter_window_list, window_list))
+    return filtered_window_list
 
 
 # ウィンドウリストから空文字と不要なものを除外する
-def filterWindowList(window_title):
+def filter_window_list(window_title):
     if window_title == "NVIDIA GeForce Overlay":
         return False
 
@@ -53,57 +53,57 @@ def filterWindowList(window_title):
 
 
 @eel.expose
-def translationScreenText(targetWindowTitle):
+def translation_screen_text(target_window_title):
     # @TODO 同じ処理が走らないようにする（FEで対応でも良さそう。responseが返ってくるまでボタンを無効にする等）
     # @TODO 保存先のユーザー名はenvに入れておく
-    print("Running translationScreenText...", targetWindowTitle)
+    print("Running translationScreenText...", target_window_title)
 
     # 指定したウィンドウタイトルからウィンドウの場所を取得する
-    windowPosition = get_window_rect_from_window_name(targetWindowTitle)
+    window_position = get_window_rect_from_window_name(target_window_title)
 
     # 指定したウィンドウのスクリーンショットを取って、保存先のPathを取得する
     # @TODO ウィンドウ名で保存する
-    savePath = create_screenshot(windowPosition)
-    print(savePath)
+    save_path = create_screenshot(window_position)
 
     # 作成したスクリーンショットをOpwnAI APIにPOSTする
-    translateText = translate_screen_text_with_ai(savePath)
+    translate_text = translate_screen_text_with_ai(save_path)
+    print(translate_text)
 
     # AIからの回答をreturnする
-    return translateText
+    return translate_text
 
 
-def get_window_rect_from_window_name(targetWindowTitle):
-    TargetWindowHandle = ctypes.windll.user32.FindWindowW(0, targetWindowTitle)
+def get_window_rect_from_window_name(target_window_title):
+    target_window_handle = ctypes.windll.user32.FindWindowW(0, target_window_title)
 
     # 対象の画面をアクティブにし最前列に表示する
     # @TODO 現状動作していない。
     # @see https://qiita.com/BlueSilverCat/items/44e98e1ed7d4bf4531b5
-    ctypes.windll.user32.ShowWindow(targetWindowTitle, 1)
-    ctypes.windll.user32.SetForegroundWindow(targetWindowTitle)
+    ctypes.windll.user32.ShowWindow(target_window_title, 1)
+    ctypes.windll.user32.SetForegroundWindow(target_window_title)
 
-    Rectangle = ctypes.wintypes.RECT()
-    ctypes.windll.user32.GetWindowRect(TargetWindowHandle, ctypes.pointer(Rectangle))
-    return (Rectangle.left, Rectangle.top, Rectangle.right, Rectangle.bottom)
+    rectangle = ctypes.wintypes.RECT()
+    ctypes.windll.user32.GetWindowRect(target_window_handle, ctypes.pointer(rectangle))
+    return (rectangle.left, rectangle.top, rectangle.right, rectangle.bottom)
 
 
-def create_screenshot(windowPosition):
+def create_screenshot(window_position):
     with mss.mss() as sct:
-        currentDatetime = datetime.datetime.now()
+        current_datetime = datetime.datetime.now()
         savePath = (
             "C:\\Users\\owner\\Pictures\\Screenshots"
             + "\\"
-            + str(currentDatetime.year)
-            + str(currentDatetime.month)
-            + str(currentDatetime.day)
-            + str(currentDatetime.hour)
-            + str(currentDatetime.minute)
-            + str(currentDatetime.second)
-            + str(currentDatetime.microsecond)
+            + str(current_datetime.year)
+            + str(current_datetime.month)
+            + str(current_datetime.day)
+            + str(current_datetime.hour)
+            + str(current_datetime.minute)
+            + str(current_datetime.second)
+            + str(current_datetime.microsecond)
             + ".png"
         )
 
-        screenshot = sct.grab(windowPosition)
+        screenshot = sct.grab(window_position)
         image = Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
         image.save(savePath)
         return savePath
@@ -114,12 +114,17 @@ def translate_screen_text_with_ai(image_path):
     anthropic_api_key = settings.anthropic_api_key
     client = anthropic.Anthropic(api_key=anthropic_api_key)
 
+    # @TODO 現状system_promptが反映されていない。
+    with open("constants/system_prompt.txt", "r", encoding="utf-8") as f:
+        system_prompt = f.read()
+
     image_media_type = "image/png"
     image_data = get_base64_encoded_image(image_path)
 
     message = client.messages.create(
         model="claude-3-haiku-20240307",
         max_tokens=4096,
+        system=system_prompt,
         messages=[
             {
                 "role": "user",
