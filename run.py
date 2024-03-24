@@ -46,6 +46,8 @@ def filterWindowList(window_title):
 
 @eel.expose
 def translationScreenText(targetWindowTitle):
+    # @TODO 同じ処理が走らないようにする（FEで対応でも良さそう）
+    # @TODO 保存先のユーザー名はenvに入れておく
     print("Running translationScreenText...", targetWindowTitle)
 
     # 指定したウィンドウタイトルからウィンドウの場所を取得する
@@ -65,7 +67,7 @@ def GetWindowRectFromName(targetWindowTitle):
     TargetWindowHandle = ctypes.windll.user32.FindWindowW(0, targetWindowTitle)
 
     # 対象の画面をアクティブにし最前列に表示する
-    # ＠TODO 現状動作していない。
+    # @TODO 現状動作していない。
     ctypes.windll.user32.ShowWindow(targetWindowTitle, 1)
     ctypes.windll.user32.SetForegroundWindow(targetWindowTitle)
 
