@@ -39,14 +39,18 @@ export const SpeechBubble: FC<{
             base: "120px",
             md: "50vh"
           }}
+          fontSize={"14px"}
           overflowY={"scroll"}
           css={{
+            pre: {
+              fontSize: "14px"
+            },
             '&::-webkit-scrollbar': {
               display: "none"
             }
           }}
         >
-          <Text fontSize={"14px"}>{text}</Text>
+          <pre>{text}</pre>
         </Box>
       </Box>
     )
