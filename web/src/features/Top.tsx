@@ -3,11 +3,15 @@ import { eel } from "../App";
 import { Box, Button, Image, Select, Stack } from "@chakra-ui/react";
 import characterImage from "../settings/chara.webp"
 import { ScreenshotIcon } from "../ui/ScreenshotIcon";
+import { SpeechBubble } from "../ui/SpeechBubble";
+import { AppFunctionButton } from "../ui/AppFunctionButton";
 
 export const TopPage: FC = () => {
   const [windowList, setWindowList] = useState<string[]>([])
   const [selectedWindow, setSelectedWindow] = useState<string | null>(null)
   const [translationText, setTranslationText] = useState<string | null>(null)
+
+  const isSelectedWindow = selectedWindow ? true : false
 
   // Python側からの返り値がある場合は、async/awaitを使用する
   const getWindowTitle = useCallback(async () => {
@@ -37,20 +41,15 @@ export const TopPage: FC = () => {
         }}
       >
         {/* 機能ボタンを表示する */}
-        <Button
-          colorScheme="telegram"
-          width={"56px"}
-          height={"56px"}
-          fontSize={"sm"}
+        <AppFunctionButton
+          icon={<ScreenshotIcon fill={"#fff"} width={8} height={8} />}
           onClick={getWindowTitle}
-        >
-          <ScreenshotIcon fill={"#fff"} width={8} height={8} />
-        </Button>
+        />
 
         {/* 機能に応じたUIを表示する */}
         {windowList.length !== 0 && (
           <Stack direction={"row"}>
-            <Select placeholder='画面を選択' onChange={(e) => setSelectedWindow(e.currentTarget.value)}>
+            <Select placeholder='翻訳する画面を選択' onChange={(e) => setSelectedWindow(e.currentTarget.value)}>
               {windowList.map((window) => {
                 return (
                   <option key={window} value={window}>{window}</option>
@@ -58,54 +57,22 @@ export const TopPage: FC = () => {
               })}
             </Select>
 
-            <Button colorScheme="telegram" fontSize={"sm"} onClick={translationScreenText}>翻訳</Button>
+            <Button
+              colorScheme={
+                isSelectedWindow ? "telegram" : "gray"
+              }
+              fontSize={"sm"}
+              isDisabled={!isSelectedWindow}
+              onClick={translationScreenText}
+            >
+              翻訳
+            </Button>
           </Stack>
         )}
 
         {/* 翻訳を表示する */}
         {translationText && (
-          <Box
-            position={"relative"}
-            padding={3}
-            backgroundColor={"#e0edff"}
-            borderRadius={8}
-            _before={{
-              content: '""',
-              position: "absolute",
-              top: {
-                base: "100%",
-                md: "90%"
-              },
-              left: {
-                base: "70%",
-                md: "100%"
-              },
-              border: "15px solid transparent",
-              borderTop: {
-                base: "15px solid #e0edff",
-                md: "none"
-              },
-              borderLeft: {
-                base: "none",
-                md: "15px solid #e0edff"
-              }
-            }}
-          >
-            <Box
-              height={{
-                base: "120px",
-                md: "50vh"
-              }}
-              overflowY={"scroll"}
-              css={{
-                '&::-webkit-scrollbar': {
-                  display: "none"
-                }
-              }}
-            >
-              {translationText}
-            </Box>
-          </Box>
+          <SpeechBubble text={translationText} />
         )}
       </Stack>
 
