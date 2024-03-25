@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react"
 import { eel } from "../App";
-import { Box, Button, Image, Select } from "@chakra-ui/react";
+import { Box, Button, Image, Select, Stack } from "@chakra-ui/react";
 import characterImage from "../settings/chara.webp"
 import { ScreenshotIcon } from "../ui/ScreenshotIcon";
 
@@ -24,13 +24,19 @@ export const TopPage: FC = () => {
 
   return (
     <Box width={"100%"} height={"100vh"} paddingX={2} paddingY={1} overflow={"hidden"}>
-      {/* 機能ボタンを表示する */}
-      <Box
+      <Stack
+        direction={"column"}
+        spacing={4}
+        width={{
+          base: "100%",
+          md: "50vw"
+        }}
         paddingTop={{
           base: "80px",
           md: "32px"
         }}
       >
+        {/* 機能ボタンを表示する */}
         <Button
           colorScheme="telegram"
           width={"56px"}
@@ -40,24 +46,68 @@ export const TopPage: FC = () => {
         >
           <ScreenshotIcon fill={"#fff"} width={8} height={8} />
         </Button>
-      </Box>
 
-      {/* 機能に応じたUIを表示する */}
-      {windowList.length !== 0 && (
-        <Box>
-          <Select placeholder='画面を選択' onChange={(e) => setSelectedWindow(e.currentTarget.value)}>
-            {windowList.map((window) => {
-              return (
-                <option key={window} value={window}>{window}</option>
-              )
-            })}
-          </Select>
+        {/* 機能に応じたUIを表示する */}
+        {windowList.length !== 0 && (
+          <Stack direction={"row"}>
+            <Select placeholder='画面を選択' onChange={(e) => setSelectedWindow(e.currentTarget.value)}>
+              {windowList.map((window) => {
+                return (
+                  <option key={window} value={window}>{window}</option>
+                )
+              })}
+            </Select>
 
-          <Button colorScheme="telegram" fontSize={"sm"} onClick={translationScreenText}>翻訳</Button>
+            <Button colorScheme="telegram" fontSize={"sm"} onClick={translationScreenText}>翻訳</Button>
+          </Stack>
+        )}
 
-          <Box>{translationText}</Box>
-        </Box>
-      )}
+        {/* 翻訳を表示する */}
+        {translationText && (
+          <Box
+            position={"relative"}
+            padding={3}
+            backgroundColor={"#e0edff"}
+            borderRadius={8}
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: {
+                base: "100%",
+                md: "90%"
+              },
+              left: {
+                base: "70%",
+                md: "100%"
+              },
+              border: "15px solid transparent",
+              borderTop: {
+                base: "15px solid #e0edff",
+                md: "none"
+              },
+              borderLeft: {
+                base: "none",
+                md: "15px solid #e0edff"
+              }
+            }}
+          >
+            <Box
+              height={{
+                base: "120px",
+                md: "50vh"
+              }}
+              overflowY={"scroll"}
+              css={{
+                '&::-webkit-scrollbar': {
+                  display: "none"
+                }
+              }}
+            >
+              {translationText}
+            </Box>
+          </Box>
+        )}
+      </Stack>
 
       {/* キャラクター画像を表示する */}
       <Box
