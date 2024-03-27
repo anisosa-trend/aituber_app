@@ -124,21 +124,25 @@ def translate_screen_text_with_ai(image_path):
     message = client.messages.create(
         model="claude-3-haiku-20240307",
         max_tokens=4096,
-        temperature=0.7,
+        system=system_prompt,
         messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": "画像に表示されている文字を日本語に翻訳して。"},
             {
                 "role": "user",
-                "content": {
-                    "type": "image",
-                    "source": {
-                        "type": "base64",
-                        "media_type": image_media_type,
-                        "data": image_data,
+                "content": [
+                    {
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": image_media_type,
+                            "data": image_data,
+                        },
                     },
-                },
-            },
+                    {
+                        "type": "text",
+                        "text": "画像に表示されている文字を日本語に翻訳して。",
+                    },
+                ],
+            }
         ],
     )
     return message.content[0].text
