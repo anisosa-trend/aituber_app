@@ -5,6 +5,8 @@ import characterImage from "../settings/chara.webp"
 import { ScreenshotIcon } from "../ui/ScreenshotIcon";
 import { SpeechBubble } from "../ui/SpeechBubble";
 import { AppFunctionButton } from "../ui/AppFunctionButton";
+import { TwitterIcon } from "../ui/TwitterIcon";
+import { SpeechBubbleIcon } from "../ui/SpeechBubbleIcon";
 
 export const TopPage: FC = () => {
   const [windowList, setWindowList] = useState<string[]>([])
@@ -41,10 +43,25 @@ export const TopPage: FC = () => {
         }}
       >
         {/* 機能ボタンを表示する */}
-        <AppFunctionButton
-          icon={<ScreenshotIcon fill={"#fff"} width={8} height={8} />}
-          onClick={getWindowTitle}
-        />
+        <Stack direction={"row"} spacing={1}>
+          <AppFunctionButton
+            colorScheme={"linkedin"}
+            icon={<SpeechBubbleIcon fill={"#fff"} width={8} height={8} />}
+            onClick={getWindowTitle}
+          />
+
+          <AppFunctionButton
+            colorScheme={"twitter"}
+            icon={<TwitterIcon fill={"#fff"} width={8} height={8} />}
+            onClick={getWindowTitle}
+          />
+
+          <AppFunctionButton
+            colorScheme={"whatsapp"}
+            icon={<ScreenshotIcon fill={"#fff"} width={8} height={8} />}
+            onClick={getWindowTitle}
+          />
+        </Stack>
 
         {/* 機能に応じたUIを表示する */}
         {windowList.length !== 0 && (

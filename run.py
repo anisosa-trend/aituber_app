@@ -16,7 +16,6 @@ def test():
     print("hello eel")
 
 
-# 起動しているウィンドウの一覧を取得する
 @eel.expose
 def get_window_title():
     response = translate_screen_text_system.get_window_title()
