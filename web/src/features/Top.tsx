@@ -27,7 +27,6 @@ export const TopPage: FC = () => {
    * フォームの入力内容を取得してAIに渡す
    */
   const [inputText, setInputText] = useState<string | null>(null)
-  console.log(inputText)
   const [isOpenTwitterForm, setIsOpenTwitterForm] = useState<boolean>(false)
 
   const isInputText = inputText && inputText.length > 0
@@ -39,6 +38,19 @@ export const TopPage: FC = () => {
     const response = await eel.post_twitter("test1")()
     console.log(response)
   }, [])
+  const resetPostTwitterState = () => {
+    setInputText(null)
+    setIsOpenTwitterForm(false)
+  }
+
+  /**
+   * @description それぞれの機能を実行する前に、それぞれの機能のStateをresetすることでフォームを切り替える。
+   */
+  const appButtonHandler = useCallback((func: () => Promise<void> | void) => {
+    resetTranslationScreenTextState()
+    resetPostTwitterState()
+    func()
+  }, [resetTranslationScreenTextState])
 
   /**
    * @todo
@@ -65,22 +77,22 @@ export const TopPage: FC = () => {
       >
         {/* 機能ボタンを表示する */}
         <Stack direction={"row"} spacing={1}>
-          <AppFunctionButton
+          {/* <AppFunctionButton
             colorScheme={"linkedin"}
             icon={<SpeechBubbleIcon fill={"#fff"} width={8} height={8} />}
-            onClick={getWindowTitle}
-          />
+            onClick={() => appButtonHandler(getWindowTitle)}
+          /> */}
 
           <AppFunctionButton
             colorScheme={"twitter"}
             icon={<TwitterIcon fill={"#fff"} width={8} height={8} />}
-            onClick={openTwitterForm}
+            onClick={() => appButtonHandler(openTwitterForm)}
           />
 
           <AppFunctionButton
             colorScheme={"whatsapp"}
             icon={<ScreenshotIcon fill={"#fff"} width={8} height={8} />}
-            onClick={getWindowTitle}
+            onClick={() => appButtonHandler(getWindowTitle)}
           />
         </Stack>
 
