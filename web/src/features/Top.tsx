@@ -8,6 +8,7 @@ import { AppFunctionButton } from "../ui/AppFunctionButton";
 import { TwitterIcon } from "../ui/TwitterIcon";
 import { SpeechBubbleIcon } from "../ui/SpeechBubbleIcon";
 import { useTranslationScreenText } from "./useTranslationScreenText";
+import { TranslationScreenTextForm } from "./TranslationScreenTextForm";
 
 export const TopPage: FC = () => {
   const {
@@ -25,6 +26,11 @@ export const TopPage: FC = () => {
    * @todo
    * フォームの入力内容を取得してAIに渡す
    */
+  const [isOpenTwitterForm, setIsOpenTwitterForm] = useState<boolean>(false)
+
+  const openTwitterForm = () => {
+    setIsOpenTwitterForm(true)
+  }
   const postTwitter = useCallback(async () => {
     const response = await eel.post_twitter("test1")()
     console.log(response)
@@ -32,7 +38,10 @@ export const TopPage: FC = () => {
 
   /**
    * @todo
-   * claude3とOpenAiの残りの金額を表示出来るか調査する
+   * 設定を編集する機能を作成する
+   *  - 使用しているAPIのリンクを張る
+   *    - 現状API経由でbillingが取得できないため。
+   *  - 画像やapi_keyを設定するフォームを追加
    * claude3にsystem_promptが反映されないので、openAiを通してキャラ付けする
    */
 
@@ -61,7 +70,7 @@ export const TopPage: FC = () => {
           <AppFunctionButton
             colorScheme={"twitter"}
             icon={<TwitterIcon fill={"#fff"} width={8} height={8} />}
-            onClick={postTwitter}
+            onClick={openTwitterForm}
           />
 
           <AppFunctionButton
@@ -73,26 +82,16 @@ export const TopPage: FC = () => {
 
         {/* 機能に応じたUIを表示する */}
         {windowList.length !== 0 && (
-          <Stack direction={"row"}>
-            <Select placeholder='翻訳する画面を選択' onChange={(e) => setSelectedWindow(e.currentTarget.value)}>
-              {windowList.map((window) => {
-                return (
-                  <option key={window} value={window}>{window}</option>
-                )
-              })}
-            </Select>
+          <TranslationScreenTextForm
+            windowList={windowList}
+            isSelectedWindow={isSelectedWindow}
+            setSelectedWindow={setSelectedWindow}
+            translationScreenText={translationScreenText}
+          />
+        )}
 
-            <Button
-              colorScheme={
-                isSelectedWindow ? "telegram" : "gray"
-              }
-              fontSize={"sm"}
-              isDisabled={!isSelectedWindow}
-              onClick={translationScreenText}
-            >
-              翻訳
-            </Button>
-          </Stack>
+        {isOpenTwitterForm && (
+          <Box>Twitter Form</Box>
         )}
 
         {/* 翻訳を表示する */}

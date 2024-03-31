@@ -4,7 +4,7 @@ import { FC } from "react"
 export const AppFunctionButton: FC<{
   colorScheme: "whiteAlpha" | "blackAlpha" | "gray" | "red" | "orange" | "yellow" | "green" | "teal" | "blue" | "cyan" | "purple" | "pink" | "linkedin" | "facebook" | "messenger" | "whatsapp" | "twitter" | "telegram"
   icon: JSX.Element;
-  onClick: () => Promise<void>
+  onClick: () => Promise<void> | void
 }> = ({
   colorScheme,
   icon,
