@@ -31,13 +31,20 @@ export const TopPage: FC = () => {
 
   const isInputText = inputText && inputText.length > 0
 
+  // 1. appボタンを押したらpromptを入力するフォームが表示される
   const openTwitterForm = () => {
     setIsOpenTwitterForm(true)
   }
+  // 2. フォームに入力されたpromptを使ってツイートを作成する
+
+  // 3. 生成されたツイートを取得する
+
+  // 4. 生成したツイートが問題なく、投稿ボタンを押されたらTwitterに投稿する。
   const postTwitter = useCallback(async () => {
     const response = await eel.post_twitter("test1")()
     console.log(response)
   }, [])
+
   const resetPostTwitterState = () => {
     setInputText(null)
     setIsOpenTwitterForm(false)
@@ -114,7 +121,6 @@ export const TopPage: FC = () => {
               colorScheme={"telegram"}
               fontSize={"sm"}
               isDisabled={!isInputText}
-            // 生成ボタンを押したら候補が表示される
             // onClick={translationScreenText}
             >
               生成
