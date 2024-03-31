@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react"
 import { eel } from "../App";
-import { Box, Button, Image, Select, Stack } from "@chakra-ui/react";
+import { Box, Button, Image, Input, Select, Stack } from "@chakra-ui/react";
 import characterImage from "../settings/chara.webp"
 import { ScreenshotIcon } from "../ui/ScreenshotIcon";
 import { SpeechBubble } from "../ui/SpeechBubble";
@@ -26,7 +26,11 @@ export const TopPage: FC = () => {
    * @todo
    * フォームの入力内容を取得してAIに渡す
    */
+  const [inputText, setInputText] = useState<string | null>(null)
+  console.log(inputText)
   const [isOpenTwitterForm, setIsOpenTwitterForm] = useState<boolean>(false)
+
+  const isInputText = inputText && inputText.length > 0
 
   const openTwitterForm = () => {
     setIsOpenTwitterForm(true)
@@ -91,7 +95,19 @@ export const TopPage: FC = () => {
         )}
 
         {isOpenTwitterForm && (
-          <Box>Twitter Form</Box>
+          <Stack direction={"row"}>
+            <Input placeholder='どんなツイートを作成しますか？' onChange={(e) => { setInputText(e.currentTarget.value) }} />
+
+            <Button
+              colorScheme={"telegram"}
+              fontSize={"sm"}
+              isDisabled={!isInputText}
+            // 生成ボタンを押したら候補が表示される
+            // onClick={translationScreenText}
+            >
+              生成
+            </Button>
+          </Stack>
         )}
 
         {/* 翻訳を表示する */}

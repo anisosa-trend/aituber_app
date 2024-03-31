@@ -23,9 +23,7 @@ export const TranslationScreenTextForm: FC<{
         </Select>
 
         <Button
-          colorScheme={
-            isSelectedWindow ? "telegram" : "gray"
-          }
+          colorScheme={"telegram"}
           fontSize={"sm"}
           isDisabled={!isSelectedWindow}
           onClick={translationScreenText}
