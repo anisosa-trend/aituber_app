@@ -53,7 +53,7 @@ export const TopPage: FC = () => {
   /**
    * @description それぞれの機能を実行する前に、それぞれの機能のStateをresetすることでフォームを切り替える。
    */
-  const appButtonHandler = useCallback((func: () => Promise<void> | void) => {
+  const appButtonHandler = useCallback((func: () => Promise<void> | void) => () => {
     resetTranslationScreenTextState()
     resetPostTwitterState()
     func()
@@ -93,13 +93,13 @@ export const TopPage: FC = () => {
           <AppFunctionButton
             colorScheme={"twitter"}
             icon={<TwitterIcon fill={"#fff"} width={8} height={8} />}
-            onClick={() => appButtonHandler(openTwitterForm)}
+            onClick={appButtonHandler(openTwitterForm)}
           />
 
           <AppFunctionButton
             colorScheme={"whatsapp"}
             icon={<ScreenshotIcon fill={"#fff"} width={8} height={8} />}
-            onClick={() => appButtonHandler(getWindowTitle)}
+            onClick={appButtonHandler(getWindowTitle)}
           />
         </Stack>
 
