@@ -4,17 +4,17 @@ import { FC } from "react";
 export const TranslationScreenTextForm: FC<{
   windowList: string[];
   isSelectedWindow: boolean;
-  setSelectedWindow: (value: React.SetStateAction<string | null>) => void
+  selectedWindowChangeEventHandler: (e: React.ChangeEvent<HTMLSelectElement>) => void
   translationScreenText: () => Promise<void>;
 }> = ({
   windowList,
   isSelectedWindow,
-  setSelectedWindow,
+  selectedWindowChangeEventHandler,
   translationScreenText
 }) => {
     return (
       <Stack direction={"row"}>
-        <Select placeholder='翻訳する画面を選択' onChange={(e) => setSelectedWindow(e.currentTarget.value)}>
+        <Select placeholder='翻訳する画面を選択' onChange={selectedWindowChangeEventHandler}>
           {windowList.map((window) => {
             return (
               <option key={window} value={window}>{window}</option>

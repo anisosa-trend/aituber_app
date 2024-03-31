@@ -8,6 +8,10 @@ export const useTranslationScreenText = () => {
 
   const isSelectedWindow = selectedWindow ? true : false
 
+  const selectedWindowChangeEventHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedWindow(e.currentTarget.value)
+  }
+
   // Python側からの返り値がある場合は、async/awaitを使用する
   const getWindowTitle = useCallback(async () => {
     // Python側からの返り値がある場合は、戻り値が関数なので、それを実行するためにもう一つカッコを付けている。
@@ -31,7 +35,7 @@ export const useTranslationScreenText = () => {
     windowList,
     translationText,
     isSelectedWindow,
-    setSelectedWindow,
+    selectedWindowChangeEventHandler,
     getWindowTitle,
     translationScreenText,
     resetTranslationScreenTextState

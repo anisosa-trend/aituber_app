@@ -15,7 +15,7 @@ export const TopPage: FC = () => {
     windowList,
     translationText,
     isSelectedWindow,
-    setSelectedWindow,
+    selectedWindowChangeEventHandler,
     getWindowTitle,
     translationScreenText,
     resetTranslationScreenTextState
@@ -85,7 +85,7 @@ export const TopPage: FC = () => {
           <TranslationScreenTextForm
             windowList={windowList}
             isSelectedWindow={isSelectedWindow}
-            setSelectedWindow={setSelectedWindow}
+            selectedWindowChangeEventHandler={selectedWindowChangeEventHandler}
             translationScreenText={translationScreenText}
           />
         )}
