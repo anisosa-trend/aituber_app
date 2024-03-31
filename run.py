@@ -5,8 +5,10 @@ import sys
 import eel
 
 from translate_screen_text_system import TranslateScreenTextSystem
+from post_twitter_system import PostTwitterSystem
 
 translate_screen_text_system = TranslateScreenTextSystem()
+post_twitter_system = PostTwitterSystem()
 
 
 # main()を実行する前に宣言する。
@@ -25,6 +27,12 @@ def get_window_title():
 @eel.expose
 def translation_screen_text(target_window_title):
     response = translate_screen_text_system.translation_screen_text(target_window_title)
+    return response
+
+
+@eel.expose
+def post_twitter(text):
+    response = post_twitter_system.post_twitter(text)
     return response
 
 

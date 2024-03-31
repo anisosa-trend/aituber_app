@@ -1,3 +1,4 @@
 .env
+/context/__pycache__
 /constants
 __pycache__

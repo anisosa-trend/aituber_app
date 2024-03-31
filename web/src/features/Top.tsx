@@ -7,26 +7,34 @@ import { SpeechBubble } from "../ui/SpeechBubble";
 import { AppFunctionButton } from "../ui/AppFunctionButton";
 import { TwitterIcon } from "../ui/TwitterIcon";
 import { SpeechBubbleIcon } from "../ui/SpeechBubbleIcon";
+import { useTranslationScreenText } from "./useTranslationScreenText";
 
 export const TopPage: FC = () => {
-  const [windowList, setWindowList] = useState<string[]>([])
-  const [selectedWindow, setSelectedWindow] = useState<string | null>(null)
-  const [translationText, setTranslationText] = useState<string | null>(null)
+  const {
+    windowList,
+    translationText,
+    isSelectedWindow,
+    setSelectedWindow,
+    getWindowTitle,
+    translationScreenText,
+    resetTranslationScreenTextState
+  } = useTranslationScreenText()
 
-  const isSelectedWindow = selectedWindow ? true : false
 
-  // Python側からの返り値がある場合は、async/awaitを使用する
-  const getWindowTitle = useCallback(async () => {
-    // Python側からの返り値がある場合は、戻り値が関数なので、それを実行するためにもう一つカッコを付けている。
-    /** @see https://ja.stackoverflow.com/questions/71919/javascript%E3%81%AEawait%E3%81%AE%E5%BE%8C%E3%82%8D%E3%81%AB%E6%8B%AC%E5%BC%A7%E3%81%8C%E4%BA%8C%E9%87%8D%E3%81%AB%E4%B8%A6%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B */
-    const windowTitleList = await eel.get_window_title()();
-    setWindowList(windowTitleList)
+  /**
+   * @todo
+   * フォームの入力内容を取得してAIに渡す
+   */
+  const postTwitter = useCallback(async () => {
+    const response = await eel.post_twitter("test1")()
+    console.log(response)
   }, [])
 
-  const translationScreenText = useCallback(async () => {
-    const translationText = await eel.translation_screen_text(selectedWindow)()
-    setTranslationText(translationText)
-  }, [selectedWindow])
+  /**
+   * @todo
+   * claude3とOpenAiの残りの金額を表示出来るか調査する
+   * claude3にsystem_promptが反映されないので、openAiを通してキャラ付けする
+   */
 
   return (
     <Box width={"100%"} height={"100vh"} paddingX={2} paddingY={1} overflow={"hidden"}>
@@ -53,7 +61,7 @@ export const TopPage: FC = () => {
           <AppFunctionButton
             colorScheme={"twitter"}
             icon={<TwitterIcon fill={"#fff"} width={8} height={8} />}
-            onClick={getWindowTitle}
+            onClick={postTwitter}
           />
 
           <AppFunctionButton
