@@ -1,12 +1,11 @@
 import { FC, useCallback, useState } from "react"
 import { eel } from "../App";
-import { Box, Button, Image, Input, Select, Stack } from "@chakra-ui/react";
+import { Box, Button, Image, Input, Stack, Textarea } from "@chakra-ui/react";
 import characterImage from "../settings/chara.webp"
 import { ScreenshotIcon } from "../ui/ScreenshotIcon";
 import { SpeechBubble } from "../ui/SpeechBubble";
 import { AppFunctionButton } from "../ui/AppFunctionButton";
 import { TwitterIcon } from "../ui/TwitterIcon";
-import { SpeechBubbleIcon } from "../ui/SpeechBubbleIcon";
 import { useTranslationScreenText } from "./useTranslationScreenText";
 import { TranslationScreenTextForm } from "./TranslationScreenTextForm";
 
@@ -26,28 +25,40 @@ export const TopPage: FC = () => {
    * @todo
    * フォームの入力内容を取得してAIに渡す
    */
-  const [inputText, setInputText] = useState<string | null>(null)
   const [isOpenTwitterForm, setIsOpenTwitterForm] = useState<boolean>(false)
+  const [createTweetPrompt, setCreateTweetPrompt] = useState<string | null>(null)
+  const [generatedTweet, setGeneratedTweet] = useState<string | null>(null)
+  const [tweetedResponse, setTweetedResponse] = useState<{
+    response: "ok" | "fail",
+    message: string
+  } | null>(null)
 
-  const isInputText = inputText && inputText.length > 0
+  const isInputTweetPrompt = createTweetPrompt && createTweetPrompt.length > 0
 
   // 1. appボタンを押したらpromptを入力するフォームが表示される
   const openTwitterForm = () => {
     setIsOpenTwitterForm(true)
   }
   // 2. フォームに入力されたpromptを使ってツイートを作成する
+  const createTweet = useCallback(async () => {
+    const response = await eel.create_tweet(createTweetPrompt)()
+    setGeneratedTweet(response)
+    setIsOpenTwitterForm(false)
+  }, [createTweetPrompt])
 
-  // 3. 生成されたツイートを取得する
-
-  // 4. 生成したツイートが問題なく、投稿ボタンを押されたらTwitterに投稿する。
-  const postTwitter = useCallback(async () => {
-    const response = await eel.post_twitter("test1")()
-    console.log(response)
+  // 3. 生成したツイートが問題なく、投稿ボタンを押されたらTwitterに投稿する。
+  const postTwitter = useCallback((tweet: string) => async () => {
+    const response = await eel.post_twitter(tweet)()
+    setTweetedResponse(response)
+    setGeneratedTweet(null)
   }, [])
 
+  // 4. 使用しているStateを全てresetする
   const resetPostTwitterState = () => {
-    setInputText(null)
+    setCreateTweetPrompt(null)
     setIsOpenTwitterForm(false)
+    setGeneratedTweet(null)
+    setTweetedResponse(null)
   }
 
   /**
@@ -103,7 +114,7 @@ export const TopPage: FC = () => {
           />
         </Stack>
 
-        {/* 機能に応じたUIを表示する */}
+        {/* 翻訳したい画面を選択するUIを表示する */}
         {windowList.length !== 0 && (
           <TranslationScreenTextForm
             windowList={windowList}
@@ -113,17 +124,50 @@ export const TopPage: FC = () => {
           />
         )}
 
+        {/* ツイートを自動生成する際の条件を入力するUIを表示する */}
         {isOpenTwitterForm && (
           <Stack direction={"row"}>
-            <Input placeholder='どんなツイートを作成しますか？' onChange={(e) => { setInputText(e.currentTarget.value) }} />
+            <Input fontSize={"sm"} placeholder='どんなツイートを作成しますか？' onChange={(e) => { setCreateTweetPrompt(e.currentTarget.value) }} />
 
             <Button
               colorScheme={"telegram"}
               fontSize={"sm"}
-              isDisabled={!isInputText}
-            // onClick={translationScreenText}
+              isDisabled={!isInputTweetPrompt}
+              onClick={createTweet}
             >
               生成
+            </Button>
+          </Stack>
+        )}
+
+        {/* 生成したツイート内容確認するUIを表示する */}
+        {generatedTweet && (
+          <Stack direction={"column"}>
+            <Textarea
+              value={generatedTweet}
+              size={'sm'}
+              resize={"none"}
+              height={{
+                base: "120px",
+                md: "50vh"
+              }}
+              backgroundColor={"#e0edff"}
+              borderRadius={8}
+              overflowY={"scroll"}
+              css={{
+                '&::-webkit-scrollbar': {
+                  display: "none"
+                }
+              }}
+              onChange={(e) => { setGeneratedTweet(e.currentTarget.value) }}
+            />
+
+            <Button
+              colorScheme={"telegram"}
+              fontSize={"sm"}
+              onClick={postTwitter(generatedTweet)}
+            >
+              投稿する
             </Button>
           </Stack>
         )}
@@ -131,6 +175,9 @@ export const TopPage: FC = () => {
         {/* 翻訳を表示する */}
         {translationText && (
           <SpeechBubble text={translationText} />
+        )}
+        {tweetedResponse?.message && (
+          <SpeechBubble text={tweetedResponse?.message} />
         )}
       </Stack>
 

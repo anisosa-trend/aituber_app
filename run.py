@@ -31,6 +31,12 @@ def translation_screen_text(target_window_title):
 
 
 @eel.expose
+def create_tweet(prompt):
+    response = post_twitter_system.create_tweet(prompt)
+    return response
+
+
+@eel.expose
 def post_twitter(text):
     response = post_twitter_system.post_twitter(text)
     return response
