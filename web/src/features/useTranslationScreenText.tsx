@@ -8,7 +8,7 @@ export const useTranslationScreenText = () => {
 
   const isSelectedWindow = selectedWindow ? true : false
 
-  const selectedWindowChangeEventHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedWindowOnChangeEventHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWindow(e.currentTarget.value)
   }
 
@@ -35,7 +35,7 @@ export const useTranslationScreenText = () => {
     windowList,
     translationText,
     isSelectedWindow,
-    selectedWindowChangeEventHandler,
+    selectedWindowOnChangeEventHandler,
     getWindowTitle,
     translationScreenText,
     resetTranslationScreenTextState

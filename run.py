@@ -11,7 +11,7 @@ translate_screen_text_system = TranslateScreenTextSystem()
 post_twitter_system = PostTwitterSystem()
 
 
-# main()を実行する前に宣言する。
+# @eel.exposeは、main()を実行する前に宣言する。
 # main()実行後に宣言するとエラーになる
 @eel.expose
 def test():
