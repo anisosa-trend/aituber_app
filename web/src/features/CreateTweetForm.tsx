@@ -12,7 +12,7 @@ export const CreateTweetForm: FC<{
 }) => {
     return (
       <Stack direction={"row"}>
-        <Input fontSize={"sm"} placeholder='どんなツイートを作成しますか？' onChange={createTweetPromptOnChangeEventHandler} />
+        <Input fontSize={"sm"} placeholder='どんなツイートを作成しますか？（例：○○のツイートを作成して）' onChange={createTweetPromptOnChangeEventHandler} />
 
         <Button
           colorScheme={"telegram"}

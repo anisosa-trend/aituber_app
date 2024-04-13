@@ -41,15 +41,6 @@ class OpenaiApiAdapter:
 
     def create_text(self, prompt):
         try:
-            chain = LLMChain(llm=self.llm, prompt=self.prompt, verbose=False)
-            response = chain.invoke({"input": prompt})
-            return response["text"]
-        except Exception as e:
-            print(e)
-            pass
-
-    def create_chat(self, prompt):
-        try:
             chain = LLMChain(
                 llm=self.llm, prompt=self.prompt, verbose=False, memory=self.memory
             )

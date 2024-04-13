@@ -4,10 +4,12 @@ import { FC } from "react"
 export const CreateTweetTextArea: FC<{
   generatedTweet: string;
   generatedTweetOnChangeEventHandler: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  createTweet: () => Promise<void>
   postTwitter: (tweet: string) => () => Promise<void>
 }> = ({
   generatedTweet,
   generatedTweetOnChangeEventHandler,
+  createTweet,
   postTwitter
 }) => {
     return (
@@ -31,13 +33,23 @@ export const CreateTweetTextArea: FC<{
           onChange={generatedTweetOnChangeEventHandler}
         />
 
-        <Button
-          colorScheme={"telegram"}
-          fontSize={"sm"}
-          onClick={postTwitter(generatedTweet)}
-        >
-          投稿する
-        </Button>
+        <Stack direction={"row"} justifyContent={"end"}>
+          <Button
+            colorScheme={"telegram"}
+            fontSize={"sm"}
+            onClick={postTwitter(generatedTweet)}
+          >
+            投稿
+          </Button>
+
+          <Button
+            colorScheme={"green"}
+            fontSize={"sm"}
+            onClick={createTweet}
+          >
+            再生成
+          </Button>
+        </Stack>
       </Stack>
     )
   }

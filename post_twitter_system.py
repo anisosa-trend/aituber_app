@@ -28,7 +28,7 @@ class PostTwitterSystem:
 
     def create_tweet(self, prompt):
         try:
-            response = self.openai_api_adapter.create_text(prompt)
+            response = self.claude_api_adapter.create_text(prompt)
             return response
         except Exception as e:
             print(e)

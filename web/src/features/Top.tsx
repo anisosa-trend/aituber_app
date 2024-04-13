@@ -51,7 +51,9 @@ export const TopPage: FC = () => {
    *  - 使用しているAPIのリンクを張る
    *    - 現状API経由でbillingが取得できないため。
    *  - 画像やapi_keyを設定するフォームを追加
-   * claude3にsystem_promptが反映されないので、openAiを通してキャラ付けする
+   * ウェブを検索してその結果を元に回答するエージェントを作る
+   *  - @see https://blog.langchain.dev/tool-calling-with-langchain/
+   *  - @see https://note.com/alexweberk/n/nd3797bbd84de
    */
 
   return (
@@ -113,6 +115,7 @@ export const TopPage: FC = () => {
           <CreateTweetTextArea
             generatedTweet={generatedTweet}
             generatedTweetOnChangeEventHandler={generatedTweetOnChangeEventHandler}
+            createTweet={createTweet}
             postTwitter={postTwitter}
           />
         )}
