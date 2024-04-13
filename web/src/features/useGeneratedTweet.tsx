@@ -2,6 +2,7 @@ import { useCallback, useState } from "react"
 import { eel } from "../App"
 
 export const useGeneratedTweet = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isOpenTwitterForm, setIsOpenTwitterForm] = useState<boolean>(false)
   const [createTweetPrompt, setCreateTweetPrompt] = useState<string | null>(null)
   const [generatedTweet, setGeneratedTweet] = useState<string | null>(null)
@@ -24,15 +25,19 @@ export const useGeneratedTweet = () => {
   }
 
   const createTweet = useCallback(async () => {
+    setIsLoading(true)
     const response = await eel.create_tweet(createTweetPrompt)()
     setGeneratedTweet(response)
     setIsOpenTwitterForm(false)
+    setIsLoading(false)
   }, [createTweetPrompt])
 
   const postTwitter = useCallback((tweet: string) => async () => {
+    setIsLoading(true)
     const response = await eel.post_twitter(tweet)()
     setTweetedResponse(response)
     setGeneratedTweet(null)
+    setIsLoading(false)
   }, [])
 
   const resetPostTwitterState = () => {
@@ -43,6 +48,7 @@ export const useGeneratedTweet = () => {
   }
 
   return {
+    isLoading,
     isOpenTwitterForm,
     generatedTweet,
     tweetedResponse,

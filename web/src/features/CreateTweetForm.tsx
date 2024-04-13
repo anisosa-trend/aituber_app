@@ -2,10 +2,12 @@ import { Button, Input, Stack } from "@chakra-ui/react"
 import { FC } from "react"
 
 export const CreateTweetForm: FC<{
+  isLoading: boolean;
   isInputTweetPrompt: boolean;
   createTweet: () => Promise<void>;
   createTweetPromptOnChangeEventHandler: (e: React.ChangeEvent<HTMLInputElement>) => void
 }> = ({
+  isLoading,
   isInputTweetPrompt,
   createTweet,
   createTweetPromptOnChangeEventHandler
@@ -17,7 +19,7 @@ export const CreateTweetForm: FC<{
         <Button
           colorScheme={"telegram"}
           fontSize={"sm"}
-          isDisabled={!isInputTweetPrompt}
+          isDisabled={!isInputTweetPrompt || isLoading}
           onClick={createTweet}
         >
           生成

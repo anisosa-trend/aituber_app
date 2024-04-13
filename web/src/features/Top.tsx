@@ -24,6 +24,7 @@ export const TopPage: FC = () => {
   } = useTranslationScreenText()
 
   const {
+    isLoading: isGeneratedTweetLoading,
     isOpenTwitterForm,
     generatedTweet,
     tweetedResponse,
@@ -104,6 +105,7 @@ export const TopPage: FC = () => {
         {/* ツイートを自動生成する際の条件を入力するUIを表示する */}
         {isOpenTwitterForm && (
           <CreateTweetForm
+            isLoading={isGeneratedTweetLoading}
             isInputTweetPrompt={isInputTweetPrompt}
             createTweet={createTweet}
             createTweetPromptOnChangeEventHandler={createTweetPromptOnChangeEventHandler}
@@ -113,6 +115,7 @@ export const TopPage: FC = () => {
         {/* 生成したツイート内容確認するUIを表示する */}
         {generatedTweet && (
           <CreateTweetTextArea
+            isLoading={isGeneratedTweetLoading}
             generatedTweet={generatedTweet}
             generatedTweetOnChangeEventHandler={generatedTweetOnChangeEventHandler}
             createTweet={createTweet}
