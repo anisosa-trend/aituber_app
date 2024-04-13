@@ -118,11 +118,10 @@ export const TopPage: FC = () => {
         )}
 
         {/* 翻訳を表示する */}
-        {/* @todo nullチェックをSpeechBubble内で行う？ */}
         {translationText && (
           <SpeechBubble text={translationText} />
         )}
-        {tweetedResponse?.message && (
+        {tweetedResponse !== null && (
           <SpeechBubble text={tweetedResponse?.message} />
         )}
       </Stack>

@@ -4,6 +4,12 @@
   color: #555555;
   font-family: 'Noto Sans JP', sans-serif;
 }
+html{
+  caret-color: transparent;
+}
+input{
+  caret-color: auto;
+}
 p {
   user-select: none;
 }

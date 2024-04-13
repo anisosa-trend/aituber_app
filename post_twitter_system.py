@@ -5,15 +5,8 @@ from pathlib import Path
 sys.path.append(str(Path("__file__").resolve().parent))
 from context import settings
 
-from langchain_openai import ChatOpenAI
-from langchain.chains import LLMChain
-from langchain.prompts import (
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-    SystemMessagePromptTemplate,
-    HumanMessagePromptTemplate,
-)
-from langchain.memory import ConversationBufferMemory
+from claude_api_adapter import ClaudeApiAdapter
+from openai_api_adapter import OpenaiApiAdapter
 
 api_key = settings.open_ai_api_key
 
@@ -29,26 +22,14 @@ with open("constants/system_prompt.txt", "r", encoding="utf-8") as f:
 
 class PostTwitterSystem:
     def __init__(self) -> None:
-        self.llm = ChatOpenAI(
-            openai_api_key=api_key, model_name="gpt-3.5-turbo", temperature=0.7
-        )
-
-        self.prompt = ChatPromptTemplate.from_messages(
-            [
-                SystemMessagePromptTemplate.from_template(
-                    "次の設定に沿って、「視聴者ちゃん」は「みんな」に置き換えてツイート内容を考えてください。"
-                    + system_prompt
-                ),
-                HumanMessagePromptTemplate.from_template("{input}"),
-            ]
-        )
+        self.claude_api_adapter = ClaudeApiAdapter()
+        self.openai_api_adapter = OpenaiApiAdapter()
         pass
 
     def create_tweet(self, prompt):
         try:
-            chain = LLMChain(llm=self.llm, prompt=self.prompt, verbose=False)
-            response = chain.invoke({"input": prompt})
-            return response["text"]
+            response = self.openai_api_adapter.create_text(prompt)
+            return response
         except Exception as e:
             print(e)
             pass
