@@ -28,7 +28,9 @@ class PostTwitterSystem:
 
     def create_tweet(self, prompt):
         try:
-            response = self.claude_api_adapter.create_text(prompt)
+            response = self.claude_api_adapter.create_text(
+                "140文字以内のツイートを作成する。" + prompt
+            )
             return response
         except Exception as e:
             print(e)
