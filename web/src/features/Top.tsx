@@ -11,6 +11,7 @@ import { TranslationScreenTextForm } from "./TranslationScreenTextForm";
 import { useGeneratedTweet } from "./useGeneratedTweet";
 import { CreateTweetForm } from "./CreateTweetForm";
 import { CreateTweetTextArea } from "./CreateTweetTextArea";
+import { VrmModel } from "./VrmModel";
 
 export const TopPage: FC = () => {
   const {
@@ -138,7 +139,7 @@ export const TopPage: FC = () => {
         bottom={0}
         right={0}
       >
-        <Image
+        {/* <Image
           src={characterImage}
           alt={""}
           width={{
@@ -152,7 +153,8 @@ export const TopPage: FC = () => {
           aspectRatio={"1/1"}
           objectFit={"cover"}
           objectPosition={"top"}
-        />
+        /> */}
+        <VrmModel />
       </Box>
     </Box>
   )
