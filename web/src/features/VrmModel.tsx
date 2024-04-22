@@ -11,7 +11,7 @@ import { loadMixamoAnimation } from "./loadMixamoAnimation";
 export const VrmStage: FC = () => {
   return (
     <Canvas
-      camera={{ position: [0, 2, 2.5] }}
+      camera={{ position: [0, 1.5, 2.5] }}
     >
       {/* <ambientLight intensity={Math.PI / 2} /> */}
       {/* <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
