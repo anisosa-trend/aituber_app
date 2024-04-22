@@ -16,6 +16,14 @@ UI 部分は web フォルダ直下に作成する。
 
 `deactivate`
 
+インストールされているパッケージ一覧をテキストに出力する
+
+`pip freeze > requirements.txt`
+
+パッケージ一覧のものをインストールする
+
+`pip install -r requirements.txt`
+
 exe ファイルを作成する
 
 `python -m eel run.py ./web/build --onefile`
