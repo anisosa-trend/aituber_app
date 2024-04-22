@@ -11,7 +11,7 @@ import { TranslationScreenTextForm } from "./TranslationScreenTextForm";
 import { useGeneratedTweet } from "./useGeneratedTweet";
 import { CreateTweetForm } from "./CreateTweetForm";
 import { CreateTweetTextArea } from "./CreateTweetTextArea";
-import { VrmModelLayout } from "./VrmModel";
+import { VrmStage } from "./VrmModel";
 
 export const TopPage: FC = () => {
   const {
@@ -136,8 +136,12 @@ export const TopPage: FC = () => {
       {/* キャラクター画像を表示する */}
       <Box
         position={"fixed"}
+        top={0}
         bottom={0}
+        left={0}
         right={0}
+        width={"100%"}
+        zIndex={-1}
       >
         {/* <Image
           src={characterImage}
@@ -154,7 +158,7 @@ export const TopPage: FC = () => {
           objectFit={"cover"}
           objectPosition={"top"}
         /> */}
-        <VrmModelLayout />
+        <VrmStage />
       </Box>
     </Box>
   )
