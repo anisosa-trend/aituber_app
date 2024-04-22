@@ -4,12 +4,20 @@ import * as THREE from 'three';
 import { AnimationMixer } from 'three';
 import { GLTFLoader, GLTFLoaderPlugin, MMDLoader } from 'three-stdlib';
 import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 
 import { loadMixamoAnimation } from "./loadMixamoAnimation";
 
-export const VrmModel: FC = () => {
-  const gltf = useLoader(GLTFLoader, './models/AliciaSolid.vrm', (loader) => {
+export const VrmModelLayout: FC = () => {
+  return (
+    <Canvas>
+      <VrmModel />
+    </Canvas>
+  )
+}
+
+const VrmModel: FC = () => {
+  const gltf = useLoader(GLTFLoader, 'models/AliciaSolid.vrm', (loader) => {
     loader.register((parser) => new VRMLoaderPlugin(parser as any) as any as GLTFLoaderPlugin);
   });
   const [rotation, setRotation] = useState<number[]>([0, 0, 0]);

@@ -11,7 +11,7 @@ import { TranslationScreenTextForm } from "./TranslationScreenTextForm";
 import { useGeneratedTweet } from "./useGeneratedTweet";
 import { CreateTweetForm } from "./CreateTweetForm";
 import { CreateTweetTextArea } from "./CreateTweetTextArea";
-import { VrmModel } from "./VrmModel";
+import { VrmModelLayout } from "./VrmModel";
 
 export const TopPage: FC = () => {
   const {
@@ -154,7 +154,7 @@ export const TopPage: FC = () => {
           objectFit={"cover"}
           objectPosition={"top"}
         /> */}
-        <VrmModel />
+        <VrmModelLayout />
       </Box>
     </Box>
   )
