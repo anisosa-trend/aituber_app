@@ -1,4 +1,4 @@
-import { FC, startTransition, useEffect, useState } from "react"
+import { FC, Suspense, startTransition, useEffect, useState } from "react"
 
 import * as THREE from 'three';
 import { AnimationMixer } from 'three';
@@ -7,24 +7,34 @@ import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 
 import { loadMixamoAnimation } from "./loadMixamoAnimation";
+import { fog } from "three/examples/jsm/nodes/fog/FogNode";
 
 export const VrmStage: FC = () => {
   return (
-    <Canvas
-      camera={{ position: [0, 1.5, 2.5] }}
-    >
-      {/* <ambientLight intensity={Math.PI / 2} /> */}
-      {/* <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
-      <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      {/* <directionalLight position={[1, 1, 1]} /> */}
-      <VRMAsset />
-      <gridHelper args={[20, 20, '#dedede', '#dedede']} />
-    </Canvas>
+    <Suspense fallback={null}>
+      <Canvas
+        camera={{ position: [0, 1.5, 2.5] }}
+      >
+        {/* <ambientLight intensity={Math.PI / 2} /> */}
+        {/* <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
+        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} castShadow={true} />
+        {/* <directionalLight position={[1, 1, 1]} /> */}
+        <VRMAsset />
+        <ShadowMap />
+        <gridHelper args={[20, 20, '#dedede', '#dedede']} />
+      </Canvas>
+    </Suspense>
   )
 }
 
+const ShadowMap: FC = () => {
+  return (
+    <fog attach="fog" args={['#dedede', 0.015, 100]} />
+  );
+}
+
 const VRMAsset: FC = () => {
-  const gltf = useLoader(GLTFLoader, 'models/AliciaSolid.vrm', (loader) => {
+  const gltf = useLoader(GLTFLoader, 'models/anna_shirafuji.vrm', (loader) => {
     loader.register((parser) => new VRMLoaderPlugin(parser as any) as any as GLTFLoaderPlugin);
   });
   const [rotation, setRotation] = useState<number[]>([0, 0, 0]);
@@ -47,9 +57,9 @@ const VRMAsset: FC = () => {
         })();
 
         // frustumCulledを切らないとメッシュが一部表示されない
-        // vrm.scene.traverse((obj: THREE.Object3D) => {
-        //   obj.frustumCulled = false;
-        // });
+        vrm.scene.traverse((obj: THREE.Object3D) => {
+          obj.frustumCulled = false;
+        });
         if (vrm.meta.metaVersion !== '1') {
           setRotation([0, (180 * Math.PI) / 180, 0]);
         }
@@ -70,10 +80,12 @@ const VRMAsset: FC = () => {
   return (
     <primitive
       object={gltf.scene}
-      position={[0, 0, 0]}
+      position={[0, 1, 1]}
       rotation={rotation}
-      scale={1}
+      scale={0.7}
       castShadow={true}
-    />
+    >
+      <meshStandardMaterial attach="material" />
+    </primitive>
   )
 }

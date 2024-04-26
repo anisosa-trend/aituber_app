@@ -64,15 +64,14 @@ const mixamoVRMRigMap: Record<string, VRMHumanBoneName> = {
  * @param {VRM} vrm A target VRM
  * @returns {Promise<THREE.AnimationClip>} The converted AnimationClip
  */
-export const loadMixamoAnimation = (url: string, vrm: VRM) => {
+export const loadMixamoAnimation = async(url: string, vrm: VRM) => {
 
   const loader = new FBXLoader(); // A loader which loads FBX
   return loader.loadAsync(url).then((asset) => {
+    console.log("Loaded asset", asset);
 
     const clip = AnimationClip.findByName(asset.animations, 'mixamo.com'); // extract the AnimationClip
-
     const tracks: KeyframeTrack[] = []; // KeyframeTracks compatible with VRM will be added here
-
     const restRotationInverse = new Quaternion();
     const parentRestWorldRotation = new Quaternion();
     const _quatA = new Quaternion();
