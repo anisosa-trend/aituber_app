@@ -16,21 +16,24 @@ export const VrmStage: FC = () => {
         camera={{ position: [0, 1.5, 2.5] }}
       >
         {/* <ambientLight intensity={Math.PI / 2} /> */}
-        {/* <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
-        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} castShadow={true} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+        {/* <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} castShadow={true} /> */}
         {/* <directionalLight position={[1, 1, 1]} /> */}
         <VRMAsset />
-        <ShadowMap />
+        <Floor />
         <gridHelper args={[20, 20, '#dedede', '#dedede']} />
       </Canvas>
     </Suspense>
   )
 }
 
-const ShadowMap: FC = () => {
+const Floor: FC = () => {
   return (
-    <fog attach="fog" args={['#dedede', 0.015, 100]} />
-  );
+    <mesh rotation-x={-Math.PI / 2} receiveShadow>
+      {/* <circleGeometry args={[5]} /> */}
+      <meshStandardMaterial color={"#ffffff"} />
+    </mesh>
+  )
 }
 
 const VRMAsset: FC = () => {
@@ -49,7 +52,7 @@ const VRMAsset: FC = () => {
         setVRM(vrm);
 
         (async () => {
-          const animation = await loadMixamoAnimation('/raw/sample.fbx', vrm);
+          const animation = await loadMixamoAnimation('/raw/sample2.fbx', vrm);
 
           const mixer = new AnimationMixer(vrm.scene);
           mixer.clipAction(animation).play();
@@ -84,8 +87,9 @@ const VRMAsset: FC = () => {
       rotation={rotation}
       scale={0.7}
       castShadow={true}
+      receiveShadow={true}
     >
-      <meshStandardMaterial attach="material" />
+      <icosahedronGeometry args={[1, 1]} />
     </primitive>
   )
 }
